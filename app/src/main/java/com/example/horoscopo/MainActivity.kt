@@ -43,8 +43,7 @@ class MainActivity : AppCompatActivity() {
         adapter = HoroscopeAdapter(horoscopeList)
 
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(this)
     }
 }
 
-//1:06:21
