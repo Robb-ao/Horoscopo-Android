@@ -1,6 +1,8 @@
 package com.example.horoscopo
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -40,7 +42,15 @@ class MainActivity : AppCompatActivity() {
         }
         recyclerView = findViewById(R.id.recyclerView)
 
-        adapter = HoroscopeAdapter(horoscopeList)
+        adapter = HoroscopeAdapter(horoscopeList, onItemClick = { position ->
+            val horoscope = horoscopeList[position]
+            Toast.makeText( this, horoscope.id, Toast.LENGTH_SHORT).show()
+            // Navegar (Intent sirve para navegar a otra pantalla)
+            //this (yo mismo)
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra("HOROSCOPE_ID", horoscope.id)
+            startActivity(intent)
+        })
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
