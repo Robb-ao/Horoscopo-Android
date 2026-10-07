@@ -1,6 +1,8 @@
 package com.example.horoscopo
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,8 +20,39 @@ class DetailActivity : AppCompatActivity() {
             insets
         }
 
-        val id = intent.getStringExtra("HOROSCOPE_ID")
+        val id = intent.getStringExtra("HOROSCOPE_ID")!!
 
-        Toast.makeText( this, id, Toast.LENGTH_SHORT).show()
+        val horoscope = Horoscope.getById(id)
+
+        supportActionBar?.setTitle(horoscope.name)
+        supportActionBar?.setSubtitle(horoscope.date)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_detail_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                Toast.makeText(this, "Atrás", Toast.LENGTH_SHORT).show()
+                finish()
+                true
+            }
+
+            R.id.menu_favorite -> {
+                Toast.makeText(this, "Favorite", Toast.LENGTH_SHORT).show()
+                true
+            }
+
+            R.id.menu_share -> {
+                Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
