@@ -1,6 +1,8 @@
-package com.example.horoscopo
+package com.example.horoscopo.data
 
-data class Horoscope (
+import com.example.horoscopo.R
+
+data class Horoscope(
     val id: String, // Unico e inmutable, llama a la Api y fav
     val name: Int,
     val date: Int,
