@@ -1,0 +1,13 @@
+package com.example.horoscopo
+
+import java.text.Normalizer
+
+//Quita acentos.
+fun String.normalize(): String {
+    val normalized = Normalizer.normalize(this, Normalizer.Form.NFD)
+    return normalized.replace("\\p{InCombiningDiacriticalMarks}+".toRegex(), "")
+}
+
+fun String.search(other: String): Boolean {
+    return this.normalize().contains(other.normalize(), true)
+}
