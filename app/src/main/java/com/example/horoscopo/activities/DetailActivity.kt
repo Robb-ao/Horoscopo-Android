@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.horoscopo.data.Horoscope
 import com.example.horoscopo.R
 import com.example.horoscopo.utils.SessionManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +25,7 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.time.Period
 import javax.net.ssl.HttpsURLConnection
 
 class DetailActivity : AppCompatActivity() {
@@ -39,6 +41,8 @@ class DetailActivity : AppCompatActivity() {
     lateinit var signImageView: ImageView
     lateinit var nameTextView: TextView
     lateinit var datesTextView: TextView
+    lateinit var predictionTextView: TextView
+    lateinit var bottonNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +57,8 @@ class DetailActivity : AppCompatActivity() {
         signImageView = findViewById(R.id.signImageView)
         nameTextView = findViewById(R.id.nameTextView)
         datesTextView = findViewById(R.id.datesTextView)
+        predictionTextView = findViewById(R.id.predictionTextView)
+        bottonNavigationView = findViewById(R.id.bottonNavigationView)
 
 
         session = SessionManager(this)
@@ -80,11 +86,31 @@ class DetailActivity : AppCompatActivity() {
             }
 
             CoroutineScope(Dispatchers.Main).launch {
-                nameTextView.text = prediction
+                predictionTextView.text = prediction
+            }
+        }
+        bottonNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_daily -> {
+                    getHoroscopePrediction("daily")
+                    true
+                }
+
+                R.id.menu_weekly -> {
+                    getHoroscopePrediction("weekly")
+                    true
+                }
+
+                R.id.menu_monthly -> {
+                    getHoroscopePrediction("monthly")
+                    true
+                }
+
+                else -> false
             }
         }
     }
-    //52:30
+    //1:25
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_detail_menu, menu)
@@ -139,11 +165,11 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    fun getHoroscopePrediction(): String? {
+    fun getHoroscopePrediction(period: String = "daily"): String? {
         var result: String? = null
 
         val urlGetRequest =
-            URL("https://freehoroscopeapi.com/api/v1/get-horoscope/daily?sign=aries")
+            URL("https://freehoroscopeapi.com/api/v1/get-horoscope/$period?sign=${horoscope.id}")
 
         val apiConnection = urlGetRequest.openConnection() as HttpsURLConnection
 
